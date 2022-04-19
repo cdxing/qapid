@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<job minFilesPerProcess="100" fileListSyntax="xrootd" >
+
+  <command>
+    starver SL20d
+    ln -s /star/u/dchen/ana/3gev_2018/qapid/StRoot .
+    ln -s /star/u/dchen/ana/3gev_2018/qapid/analyzePico.C .
+    ln -s /star/u/dchen/ana/3gev_2018/qapid/config_3p0GeV.txt .
+
+    cons
+    root4star -q -l -b analyzePico.C\(\"$FILELIST\",\"$JOBID\",\"config_3p0GeV.txt\"\) &gt;&amp; ${JOBID}.log
+    tar -zcvf ${JOBID}.log.tgz ${JOBID}.log
+  </command>
+
+  <SandBox installer="ZIP">
+    <Package>
+      <File>file:./analyzePico.C</File>
+      <File>file:./config_3p0GeV.txt</File>
+      <File>file:./StRoot</File>
+    </Package>
+  </SandBox>
+
+   <!--input URL="filelist:/star/u/dchen/4p5GeVPico.list" nFiles="all"/-->
+   <!--input URL="catalog:star.bnl.gov?production=P19ie,filetype=daq_reco_picoDst,trgsetupname=production_3p85GeV_fixedTarget_2018,tpx=1,filename~st_physics,runnumber=&run;,sanity=1,storage!=HPSS" nFiles="all"/-->
+   <input URL="catalog:star.bnl.gov?production=P19ie,filetype=daq_reco_picoDst,trgsetupname=production_3p85GeV_fixedTarget_2018,tpx=1,filename~st_physics,sanity=1,storage!=HPSS" nFiles="all"/>
+   
+  <stdout discard="true" />
+  <stderr URL="file:./err/$JOBID.err"/>
+
+  <Generator>
+	  <Location>./report/</Location>
+	  <ScriptLocation>./csh/</ScriptLocation>
+	  <ListLocation>./list/</ListLocation>
+  </Generator>
+
+  <output fromScratch="*.root" toURL="file:/star/data01/pwg/dchen/Ana/3GeV_FXT_2018/qapid/production/" />
+  <output fromScratch="*.log.tgz" toURL="file:/star/data01/pwg/dchen/Ana/3GeV_FXT_2018/qapid/log/" />
+
+
+</job>
+
