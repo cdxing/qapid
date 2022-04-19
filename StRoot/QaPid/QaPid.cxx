@@ -3,10 +3,18 @@
 #include "StRoot/ConstManager/ConstManager.h"
 //#include "../HistManager/HistManager.h"
 #include "StRoot/HistManager/HistManager.h"
+// Load STARLibrary header files
+#include "StMaker.h"
+#include "StRoot/StPicoDstMaker/StPicoDstMaker.h"
 #include "StRoot/StPicoEvent/StPicoDst.h"
 #include "StRoot/StPicoEvent/StPicoEvent.h"
 #include "StRoot/StPicoEvent/StPicoTrack.h"
-#include "StRoot/StPicoDstMaker/StPicoDstMaker.h"
+#include "StRoot/StPicoEvent/StPicoHelix.h"
+#include "StRoot/StPicoEvent/StPicoBbcHit.h"
+#include "StRoot/StPicoEvent/StPicoEpdHit.h"
+#include "StRoot/StPicoEvent/StPicoBTofHit.h"
+#include "StRoot/StPicoEvent/StPicoBTofPidTraits.h"
+#include "StRoot/StPicoEvent/StPicoTrackCovMatrix.h"
 //#include "StRoot/run/run.h"
 #include "StThreeVectorF.hh"
 #include "TH1F.h"
@@ -102,6 +110,7 @@ Int_t QaPid::Make()
     {
         StPicoTrack *track = (StPicoTrack*)mPicoDst->track(i);
         if(!track->isPrimary()) continue; // Only Primary Tracks
+        mHistManager->FillTrackQA(track,(TVector3)mPicoEvent->primaryVertex());
         //StPicoPhysicalHelix helix = track->helix(mField);
         //Float_t dca = helix.geometricSignedDistance(mVertexPos);
 	TrkMult ++;
@@ -141,7 +150,7 @@ Int_t QaPid::Make()
     if(mCutManager->passEventCut(mPicoDst)) // event cut
     {
 	
-        mHistManager->FillEventQaCut(mPicoEvent->primaryVertex(),refMult,TOF_Mul,refMult);
+        mHistManager->FillEventQaCut(mPicoEvent->primaryVertex(),refMult,TOF_Mul,TrkMult);
         mHistManager->FillEventCut(1);
         //mRefMultCorr->init(runId);
         //mRefMultCorr->initEvent(refMult, vz, zdcX);
@@ -160,19 +169,43 @@ Int_t QaPid::Make()
         //const Int_t nToFMatched = mCutManager->getMatchedToF();
         TVector3 mVertexPos = mPicoDst->event()->primaryVertex();
         float mField = mPicoEvent->bField();
+        Int_t N_pp = 0, N_pm = 0, N_kp = 0, N_km = 0, N_pr = 0;
 
         //cout << "nTracks = " << nTracks << endl;
         for(Int_t i = 0; i < nTracks; i++) // track loop
         {
             StPicoTrack *track = (StPicoTrack*)mPicoDst->track(i);
+            if(!track->isPrimary()) continue; // Only Primary Tracks
+            mHistManager->FillTrackCut(0);
+            if(!mCutManager->passTrackBasic(track)) continue;
+            mHistManager->FillTrackCut(1);
+            mHistManager->FillTrackPhysics(track );
+		
             //StPicoPhysicalHelix helix = track->helix(mField);
             //Float_t dca = helix.geometricSignedDistance(mVertexPos);
+            Short_t  s_charge = track->charge();
             Float_t dca=track->gDCA(mVertexPos).Mag();
-        }
-
-
-        // eta sub event shift parameter
-    }
+	    if(mCutManager->isTofTrack(mPicoDst,track)) mHistManager->FillTrackTof(mPicoDst,track);
+	    if(mCutManager->isProton(track))
+	    {
+	   	mHistManager->FillProton(mPicoDst,track,configs.y_mid); 
+		N_pr++;
+	    }
+	    if(mCutManager->isKaon(mPicoDst,track))
+	    {
+	   	mHistManager->FillKaon(mPicoDst,track,configs.y_mid); 
+		if(s_charge >0) N_kp++;
+		else N_km++;
+	    }
+	    if(mCutManager->isPion(mPicoDst,track))
+	    {
+	   	mHistManager->FillPion(mPicoDst,track,configs.y_mid); 
+		if(s_charge >0) N_pp++;
+		else N_pm++;
+	    }
+        } // track loop
+	mHistManager->FillPIDMult(N_pp , N_pm , N_kp , N_km , N_pr ); 
+    } // event cut
 
     return kStOK;
 }

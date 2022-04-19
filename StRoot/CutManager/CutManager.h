@@ -22,9 +22,14 @@ class CutManager : public TObject
     ~CutManager();
 
     bool isGoodTrigger(StPicoDst* );
-    bool passEventCut(StPicoDst*);
+    bool passEventCut(StPicoDst* );
+    bool isTofTrack(StPicoDst*, StPicoTrack* );
     bool passTrackEP(StPicoTrack*, float);
-    bool passTrackBasic(StPicoTrack*);
+    bool passTrackBasic(StPicoTrack* );
+    bool isProton( StPicoTrack* );
+    bool isKaon(StPicoDst*, StPicoTrack* );
+    bool isPion(StPicoDst*, StPicoTrack* );
+
     Int_t getCentrality(int gRefMult);
     Int_t getMatchedToF();
     Int_t getNpirm();

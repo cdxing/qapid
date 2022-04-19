@@ -75,31 +75,49 @@ bool CutManager::passEventCut(StPicoDst *pico)
 }
 
 //---------------------------------------------------------------------------------
+bool CutManager::isTofTrack(StPicoDst *pico, StPicoTrack *track)
+{
+  Bool_t b_tofTrack = false;
+  Double_t d_tofBeta = -999.0;
+  //Double_t d_m2 = 0.0;
+  Int_t trackTofIndex = track->bTofPidTraitsIndex();
+  if(trackTofIndex >= 0)
+    d_tofBeta = pico->btofPidTraits(trackTofIndex)->btofBeta();
+
+  if(d_tofBeta != -999.0)
+    {
+      b_tofTrack = true;
+      /*d_m2 = d_mom*d_mom*( (1.0 / (d_tofBeta*d_tofBeta)) - 1.0 );
+      h2_beta_vs_qp->Fill(s_charge*d_mom, 1.0/d_tofBeta);
+      h2_m2_vs_qp->Fill(s_charge*d_mom, d_m2);*/
+    }
+  return b_tofTrack;
+}
 
 bool CutManager::passTrackBasic(StPicoTrack *track)
 {
     // nHitsFit cut
-    if(track->nHitsFit() < ConstManager::mHitsFitTPCMin)     //  15
+    if(track->nHitsFit() < mConfigs.nHits)     //  
     {
         return kFALSE;
     }
 
     // nHitsRatio cut
-    if(track->nHitsMax() <= ConstManager::mHitsMaxTPCMin)   // 0
+    if(track->nHitsMax() <=  mConfigs.nHits )   // 
     {
         return kFALSE;
     }
-    if((Float_t)track->nHitsFit()/(Float_t)track->nHitsMax() < ConstManager::mHitsRatioTPCMin)  // 0.52
+    if((Float_t)track->nHitsFit()/(Float_t)track->nHitsMax() < mConfigs.nHits_ratio)  // 0.52
     {
         return kFALSE;
     }
 
     // eta cut
-    Float_t eta = track->pMom().PseudoRapidity();
+    /*Float_t eta = track->pMom().PseudoRapidity();
     if(fabs(eta) > ConstManager::mEtaMax)  // 1
     {
         return kFALSE;
-    }
+    }*/
 
     return kTRUE;
 }
@@ -126,6 +144,61 @@ bool CutManager::passTrackEP(StPicoTrack *track, float dca)
     }
 
     return kTRUE;
+}
+//---------------------------------------------------------------------------------
+// PID
+bool CutManager::isProton( StPicoTrack *track)
+{
+  Double_t d_TPCnSigmaProton = track->nSigmaProton();
+  Short_t  s_charge = track->charge();
+  Bool_t proton = (d_TPCnSigmaProton > mConfigs.nSig_pr_low) && (d_TPCnSigmaProton < mConfigs.nSig_pr_high) && (s_charge > 0);
+  return proton;
+}
+
+bool CutManager::isKaon(StPicoDst *pico, StPicoTrack *track)
+{
+  Double_t d_TPCnSigmaKaon   = track->nSigmaKaon();
+  Short_t  s_charge = track->charge();
+  Bool_t kaon   = false;
+  Double_t d_tofBeta = -999.0;
+  Double_t d_m2 = -999.0;
+  Double_t d_mom = track->pMom().Mag();
+  Int_t trackTofIndex = track->bTofPidTraitsIndex();
+  if(trackTofIndex >= 0)
+    d_tofBeta = pico->btofPidTraits(trackTofIndex)->btofBeta();
+  if(d_tofBeta != -999.0)
+    {
+      d_m2 = d_mom*d_mom*( (1.0 / (d_tofBeta*d_tofBeta)) - 1.0 );
+    }
+  kaon = (d_TPCnSigmaKaon > mConfigs.nSig_ka_low) &&
+         (d_TPCnSigmaKaon < mConfigs.nSig_ka_high) &&
+         (d_m2 > mConfigs.m2_ka_low) &&
+         (d_m2 < mConfigs.m2_ka_high);
+
+  return kaon;
+}
+
+bool CutManager::isPion(StPicoDst *pico, StPicoTrack *track)
+{
+  Double_t d_TPCnSigmaPion   = track->nSigmaPion();
+  Short_t  s_charge = track->charge();
+  Bool_t pion   = false;
+  Double_t d_tofBeta = -999.0;
+  Double_t d_m2 = -999.0;
+  Double_t d_mom = track->pMom().Mag();
+  Int_t trackTofIndex = track->bTofPidTraitsIndex();
+  if(trackTofIndex >= 0)
+    d_tofBeta = pico->btofPidTraits(trackTofIndex)->btofBeta();
+  if(d_tofBeta != -999.0)
+    {
+      d_m2 = d_mom*d_mom*( (1.0 / (d_tofBeta*d_tofBeta)) - 1.0 );
+    }
+  pion = (d_TPCnSigmaPion > mConfigs.nSig_pi_low) &&
+         (d_TPCnSigmaPion < mConfigs.nSig_pi_high) &&
+         (d_m2 > mConfigs.m2_pi_low) &&
+         (d_m2 < mConfigs.m2_pi_high);
+
+  return pion;
 }
 //---------------------------------------------------------------------------------
 

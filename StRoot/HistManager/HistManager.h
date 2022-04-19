@@ -12,6 +12,7 @@ class TH1F;
 class TH1D;
 class TH2D;
 class StPicoTrack;
+class StPicoDst;
 
 class HistManager
 {
@@ -29,12 +30,15 @@ class HistManager
     void FillEventCent(Int_t centrality); // 
     void FillEventCut(Int_t CutID); // 
     // Track level QA
-    void FillTrackQA(StPicoTrack *PicoTrack); // 
+    void FillTrackQA(StPicoTrack *PicoTrack, TVector3 pVtx); // 
+    void FillTrackPhysics(StPicoTrack *track);
+    void FillTrackTof(StPicoDst* pico, StPicoTrack *track);
     void FillTrackCut(Int_t CutID); // 
     // PID 
-    void FillProtonTrack(StPicoTrack *PicoTrack);  
-    void FillKaonTrack(StPicoTrack *PicoTrack); 
-    void FillPionTrack(StPicoTrack *PicoTrack); 
+    void FillProton(StPicoDst *pico, StPicoTrack *PicoTrack, Double_t y_mid);  
+    void FillKaon(StPicoDst *pico, StPicoTrack *PicoTrack, Double_t y_mid); 
+    void FillPion(StPicoDst *pico, StPicoTrack *PicoTrack, Double_t y_mid); 
+    void FillPIDMult(Int_t, Int_t, Int_t, Int_t, Int_t); 
 
     // Scalor Product method
 

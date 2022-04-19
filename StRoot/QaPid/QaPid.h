@@ -13,11 +13,12 @@ class StPicoEvent;
 class CutManager;
 class HistManager;
 class StRefMultCorr;
+class StPicoBTofPidTraits;
 
 // run QA
-class TProfile;
-class TH1F;
-class TH2F;
+//class TProfile;
+//class TH1F;
+//class TH2F;
 
 class QaPid : public StMaker {
     public:
