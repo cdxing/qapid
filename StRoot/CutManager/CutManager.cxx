@@ -234,7 +234,7 @@ Int_t CutManager::getCentrality(int gRefMult)
     else if (gRefMult>=centLow[2] && gRefMult<=centHigh[2]) centrality=2;
     else if (gRefMult>=centLow[1] && gRefMult<=centHigh[1]) centrality=1;
     else if (gRefMult>=centLow[0] && gRefMult<=centHigh[0]) centrality=0;
-    else centrality = 9;
+    else centrality = 16;
 
     return centrality;
 
