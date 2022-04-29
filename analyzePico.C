@@ -18,9 +18,9 @@ void analyzePico(const Char_t *inputFile="test.list", char *outputFile="test",st
         gROOT->LoadMacro("$STAR/StRoot/StMuDSTMaker/COMMON/macros/loadSharedLibraries.C");
 	loadSharedLibraries();
 
-      //gSystem->Load("StRefMultCorr");
 	gSystem->Load("ConstManager");
   	gSystem->Load("ConfigReader");
+        gSystem->Load("StRefMultCorr");
 	gSystem->Load("StPicoEvent");
 	gSystem->Load("StPicoDstMaker");
 	gSystem->Load("CutManager");

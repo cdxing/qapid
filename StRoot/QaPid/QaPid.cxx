@@ -26,11 +26,11 @@
 #include "StMessMgr.h"
 #include <algorithm>
 #include <array>
-//#include "StRoot/StRefMultCorr/StRefMultCorr.h"
-//#include "StRoot/StRefMultCorr/CentralityMaker.h"
+#include "StRoot/StRefMultCorr/StRefMultCorr.h"
+#include "StRoot/StRefMultCorr/CentralityMaker.h"
 ClassImp(QaPid)
 
-    //StRefMultCorr* QaPid::mRefMultCorr = NULL;
+    StRefMultCorr* QaPid::mRefMultCorr = NULL;
     //-----------------------------------------------------------------------------
     QaPid::QaPid(const char* name, StPicoDstMaker *picoMaker, char* jobid, std::string configFileName)
 : StMaker(name)
@@ -50,10 +50,10 @@ QaPid::~QaPid()
 //----------------------------------------------------------------------------- 
 Int_t QaPid::Init() 
 {
-    //if(!mRefMultCorr)
-    //{
-    //    mRefMultCorr = CentralityMaker::instance()->getRefMultCorr();
-    //}
+    if(!mRefMultCorr)
+    {
+        mRefMultCorr = CentralityMaker::instance()->getRefMultCorr();
+    }
     
     mCutManager = new CutManager(configs);
     mHistManager = new HistManager();
@@ -152,13 +152,13 @@ Int_t QaPid::Make()
 	
         mHistManager->FillEventQaCut(mPicoEvent->primaryVertex(),refMult,TOF_Mul,TrkMult);
         mHistManager->FillEventCut(1);
-        //mRefMultCorr->init(runId);
-        //mRefMultCorr->initEvent(refMult, vz, zdcX);
-        //const Int_t cent9 = mRefMultCorr->getCentralityBin9();
+        mRefMultCorr->init(runId);
+        mRefMultCorr->initEvent(refMult, vz, zdcX);
+        const Int_t cent16 = mRefMultCorr->getCentralityBin16();
         //const Double_t reweight = mRefMultCorr->getWeight();
 	//std::cout << "refMult: " << refMult << std::endl;
 	//std::cout << "TrkMult: " << TrkMult << std::endl;
-        const int cent16 = mCutManager->getCentrality(TrkMult);
+        //const int cent16 = mCutManager->getCentrality(TrkMult);
 	
 	//std::cout << "cent16: " << cent16 << std::endl;
         const double reweight = 1.0;

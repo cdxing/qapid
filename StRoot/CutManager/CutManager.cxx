@@ -64,7 +64,7 @@ bool CutManager::passEventCut(StPicoDst *pico)
     //std::cout<< "event cut test 2 "<<std::endl;
     //if(event->btofTrayMultiplicity()<2)return kFALSE;
     // vr cut
-    if(sqrt(vx*vx+(vy+2)*(vy+2)) > mConfigs.r_vtx)
+    if(sqrt(vx*vx+vy*vy) > mConfigs.r_vtx)
     {
         return kFALSE;
     }
@@ -218,6 +218,17 @@ Int_t CutManager::getCentrality(int gRefMult)
 		centLow[i]  = centLow_3p0GeV[i];
         }
     }
+    if (mConfigs.sqrt_s_NN == 19.6)
+    {// https://drupal.star.bnl.gov/STAR/system/files/Sweger_20220125.pdf
+	std::cout << "19p6GeV centrality" << std::endl;
+    	int centHigh_19p6GeV[16]={6,8,11,15,20,25,32,40,49,59,71,85,100,118,141,500};
+    	int centLow_19p6GeV[16] ={5,7,9, 12,16,21,26,33,41,50,60,72,86 ,101,119,296};
+        for(int i = 0; i<16 ; i++)
+        {
+		centHigh[i] = centHigh_19p6GeV[i];
+		centLow[i]  = centLow_19p6GeV[i];
+        }
+    }
     if      (gRefMult>=centLow[15] && gRefMult<=centHigh[15]) centrality=15;
     else if (gRefMult>=centLow[14] && gRefMult<=centHigh[14]) centrality=14;
     else if (gRefMult>=centLow[13] && gRefMult<=centHigh[13]) centrality=13;
@@ -234,7 +245,7 @@ Int_t CutManager::getCentrality(int gRefMult)
     else if (gRefMult>=centLow[2] && gRefMult<=centHigh[2]) centrality=2;
     else if (gRefMult>=centLow[1] && gRefMult<=centHigh[1]) centrality=1;
     else if (gRefMult>=centLow[0] && gRefMult<=centHigh[0]) centrality=0;
-    else centrality = 9;
+    else centrality = 16;
 
     return centrality;
 
