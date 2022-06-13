@@ -9,7 +9,7 @@
     ln -s /star/u/dchen/ana/19gev_2019/qapid/config_19p6GeV.txt .
 
     cons
-    root4star -q -l -b analyzePico.C\(\"$FILELIST\",\"$JOBID\",\"config_3p0GeV.txt\"\) &gt;&amp; ${JOBID}.log
+    root4star -q -l -b analyzePico.C\(\"$FILELIST\",\"$JOBID\",\"config_19p6GeV.txt\"\) &gt;&amp; ${JOBID}.log
     tar -zcvf ${JOBID}.log.tgz ${JOBID}.log
   </command>
 
@@ -23,7 +23,7 @@
 
    <!--input URL="filelist:/star/u/dchen/4p5GeVPico.list" nFiles="all"/-->
    <!--input URL="catalog:star.bnl.gov?production=P19ie,filetype=daq_reco_picoDst,trgsetupname=production_3p85GeV_fixedTarget_2018,tpx=1,filename~st_physics,runnumber=&run;,sanity=1,storage!=HPSS" nFiles="all"/-->
-   <input URL="catalog:star.bnl.gov?production=P21ic,filetype=daq_reco_picoDst,trgsetupname=production_19GeV_2019,tpx=1,filename~st_physics,sanity=1,storage!=HPSS" nFiles="500"/>
+   <input URL="catalog:star.bnl.gov?production=P21ic,filetype=daq_reco_picoDst,trgsetupname=production_19GeV_2019,tpx=1,filename~st_physics,sanity=1,storage!=HPSS" nFiles="103690"/>
    
   <stdout discard="true" />
   <stderr URL="file:./err/$JOBID.err"/>
