@@ -77,15 +77,16 @@ void HistManager::InitQAPID()
 
   h2_tofmult_vs_refmult = new TH2D("h2_tofmult_vs_refmult","TofMult vs. RefMult;RefMult;TofMult",1001,-0.5,1000.5,1001,-0.5,1000.5);
 
-  h_nhits       = new TH1D("h_nhits", "nHits;Number of hits;Tracks", 50, 0, 50);
-  h_nhits_dEdx  = new TH1D("h_nhits_dEdx","nHitsdEdx;Number of hits;Tracks", 50, 0, 50);
+  h_nhits       = new TH1D("h_nhits", "nHits;Number of hits;Tracks", 100, 0, 100);
+  h_nhits_dEdx  = new TH1D("h_nhits_dEdx","nHitsdEdx;Number of hits;Tracks", 100, 0, 100);
   h_nhits_ratio = new TH1D("h_nhits_ratio","nhitsFit/nhitsPoss;nhitsFit/nhitsPoss;Tracks",200,0.0,2.0);
   h_DCA         = new TH1D("h_DCA","DCA (cm);DCA (cm);Tracks",100,0.0,10.0);
   
   h_pT = new TH1D("h_pT","p_{T};p_{T};Tracks",1000,0.0,10.0);
   h_eta = new TH1D("h_eta","#eta;#eta;Tracks",600,-6.0,6.0);
   h_phi = new TH1D("h_phi","#phi (Radian);#phi;Tracks",1000,-1.5*TMath::Pi(),1.5*TMath::Pi());
-  h2_dEdx_vs_qp = new TH2D("h2_dEdx_vs_qp", "dE/dx vs q|p|;q|p| (GeV);dE/dx (keV/cm)", 400, -2, 2, 500, 0, 10);
+  //h2_dEdx_vs_qp = new TH2D("h2_dEdx_vs_qp", "dE/dx vs q|p|;q|p| (GeV);dE/dx (keV/cm)", 400, -2, 2, 500, 0, 10);
+  h2_dEdx_vs_qp = new TH2D("h2_dEdx_vs_qp", "dE/dx vs q|p|;q|p| (GeV);dE/dx (keV/cm)", 800, -2, 6, 1000, 0, 20);
   h2_dEdx_vs_qp_half = new TH2D("h2_dEdx_vs_qp_half", "dE/dx vs q|p|;q|p| (GeV);dE/dx (keV/cm)", 400, 0, 4, 500, 0, 12);
   h2_beta_vs_qp = new TH2D("h2_beta_vs_qp","1/#beta vs Momentum;q*|p| (GeV);1/#beta", 300, -3, 3, 300, 0.5, 3.5);
   h2_m2_vs_qp = new TH2D("h2_m2_vs_qp", "m^2 vs q*|p|;q*|p| (GeV);m^2 (GeV^2)", 400, -4, 4, 400, -0.1, 1.5);
@@ -186,7 +187,7 @@ void HistManager::FillEventQaCut(TVector3 PrimaryVertex, Double_t RefMult, Doubl
 {
     Float_t x_vtx = PrimaryVertex.X();
     Float_t y_vtx = PrimaryVertex.Y();
-    Float_t z_vtx = PrimaryVertex.Z();
+    //Float_t z_vtx = PrimaryVertex.Z();
     
     h2_trans_vtx_cut->Fill(x_vtx,y_vtx);
 }
@@ -262,7 +263,7 @@ void HistManager::FillProton(StPicoDst *pico, StPicoTrack *track, Double_t y_mid
   Double_t d_eta = track->pMom().Eta();
   Double_t d_phi = track->pMom().Phi();
   Double_t d_mom = track->pMom().Mag();
-  Double_t d_dEdx = track->dEdx();
+  //Double_t d_dEdx = track->dEdx();
   Short_t  s_charge = track->charge();
   TLorentzVector ltrack;
   ltrack.SetXYZM(d_px,d_py,d_pz,ConstManager::mMassProton);
@@ -297,7 +298,7 @@ void HistManager::FillKaon(StPicoDst *pico, StPicoTrack *track, Double_t y_mid)
   Double_t d_eta = track->pMom().Eta();
   Double_t d_phi = track->pMom().Phi();
   Double_t d_mom = track->pMom().Mag();
-  Double_t d_dEdx = track->dEdx();
+  //Double_t d_dEdx = track->dEdx();
   Short_t  s_charge = track->charge();
   TLorentzVector ltrack;
   ltrack.SetXYZM(d_px,d_py,d_pz,ConstManager::mMassKaon);
@@ -344,7 +345,7 @@ void HistManager::FillPion(StPicoDst *pico, StPicoTrack *track, Double_t y_mid)
   Double_t d_eta = track->pMom().Eta();
   Double_t d_phi = track->pMom().Phi();
   Double_t d_mom = track->pMom().Mag();
-  Double_t d_dEdx = track->dEdx();
+  //Double_t d_dEdx = track->dEdx();
   Short_t  s_charge = track->charge();
   TLorentzVector ltrack;
   ltrack.SetXYZM(d_px,d_py,d_pz,ConstManager::mMassPion);

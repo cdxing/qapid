@@ -41,7 +41,9 @@ bool CutManager::isGoodTrigger(StPicoDst *pico)
 
 bool CutManager::passEventCut(StPicoDst *pico)
 {
-    if(!CutManager::isGoodTrigger(pico)) return kFALSE;
+    //if(!CutManager::isGoodTrigger(pico)) return kFALSE;
+    //No Tirgger Cut for now.
+
     //std::cout<< "event cut test 0 "<<std::endl;
     StPicoEvent *event = pico->event();
     if(!event)
