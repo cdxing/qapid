@@ -10,7 +10,7 @@ rm -rf  csh
 rm -rf  err
 rm -rf  list
 rm -rf  log
-rm -rf  out_Phi
+rm -rf  production
 rm -rf  LocalLibraries.zip
 rm -rf  LocalLibraries.package
 rm -rf sched*
