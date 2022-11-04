@@ -7,7 +7,7 @@
 fixed_target=1
 
 sqrt_s_NN=4.5
-y_mid=-1.52
+y_mid=-1.522
 order_n=3.0
 order_m=1.0
 shift_terms=10
