@@ -149,18 +149,35 @@ bool CutManager::passTrackEP(StPicoTrack *track, float dca)
 }
 //---------------------------------------------------------------------------------
 // PID
-bool CutManager::isProton( StPicoTrack *track)
+bool CutManager::isProton(StPicoDst *pico, StPicoTrack *track)
 {
   Double_t d_TPCnSigmaProton = track->nSigmaProton();
+  Bool_t proton   = false;
+  Double_t d_tofBeta = -999.0;
+  Double_t d_m2 = -999.0;
+  Double_t d_mom = track->pMom().Mag();
   Short_t  s_charge = track->charge();
-  Bool_t proton = (d_TPCnSigmaProton > mConfigs.nSig_pr_low) && (d_TPCnSigmaProton < mConfigs.nSig_pr_high) && (s_charge > 0);
+  Int_t trackTofIndex = track->bTofPidTraitsIndex();
+  if(trackTofIndex >= 0)
+    d_tofBeta = pico->btofPidTraits(trackTofIndex)->btofBeta();
+  if(d_tofBeta != -999.0)
+    {
+      d_m2 = d_mom*d_mom*( (1.0 / (d_tofBeta*d_tofBeta)) - 1.0 );
+    }
+
+  proton = ((d_TPCnSigmaProton > mConfigs.nSig_pr_low) && (d_TPCnSigmaProton < mConfigs.nSig_pr_high) && (s_charge > 0) && d_mom < 1.3) ||
+  	 ((d_TPCnSigmaProton > mConfigs.nSig_pr_low) &&
+         (d_TPCnSigmaProton < mConfigs.nSig_pr_high) &&
+         (d_m2 > 0.8) &&
+         (d_m2 < 1.2))
+	  ;
   return proton;
 }
 
 bool CutManager::isKaon(StPicoDst *pico, StPicoTrack *track)
 {
   Double_t d_TPCnSigmaKaon   = track->nSigmaKaon();
-  Short_t  s_charge = track->charge();
+  //Short_t  s_charge = track->charge();
   Bool_t kaon   = false;
   Double_t d_tofBeta = -999.0;
   Double_t d_m2 = -999.0;
@@ -183,7 +200,7 @@ bool CutManager::isKaon(StPicoDst *pico, StPicoTrack *track)
 bool CutManager::isPion(StPicoDst *pico, StPicoTrack *track)
 {
   Double_t d_TPCnSigmaPion   = track->nSigmaPion();
-  Short_t  s_charge = track->charge();
+  //Short_t  s_charge = track->charge();
   Bool_t pion   = false;
   Double_t d_tofBeta = -999.0;
   Double_t d_m2 = -999.0;

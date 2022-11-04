@@ -186,7 +186,7 @@ Int_t QaPid::Make()
             Short_t  s_charge = track->charge();
             Float_t dca=track->gDCA(mVertexPos).Mag();
 	    if(mCutManager->isTofTrack(mPicoDst,track)) mHistManager->FillTrackTof(mPicoDst,track);
-	    if(mCutManager->isProton(track))
+	    if(mCutManager->isProton(mPicoDst,track))
 	    {
 	   	mHistManager->FillProton(mPicoDst,track,configs.y_mid); 
 		N_pr++;
