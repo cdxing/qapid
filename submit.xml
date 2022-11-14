@@ -9,21 +9,21 @@
 	  <!--ln -s /star/u/dchen/ana/3gev_2018/qapid/config_3p0GeV.txt .-->
     stardev
     cons
-    root4star -q -l -b analyzePico.C\(\"$FILELIST\",\"$JOBID\",\"config_4p5GeV.txt\"\) &gt;&amp; ${JOBID}.log
+    root4star -q -l -b analyzePico.C\(\"$FILELIST\",\"$JOBID\",\"config_3p2GeV.txt\"\) &gt;&amp; ${JOBID}.log
     tar -zcvf ${JOBID}.log.tgz ${JOBID}.log
   </command>
 
   <SandBox installer="ZIP">
     <Package>
       <File>file:./analyzePico.C</File>
-      <File>file:./config_4p5GeV.txt</File>
+      <File>file:./config_3p2GeV.txt</File>
       <File>file:./StRoot</File>
     </Package>
   </SandBox>
 
-   <!--input URL="filelist:/star/u/dchen/4p5GeVPico.list" nFiles="all"/-->
+   <!--input URL="filelist:/star/u/dchen/3p2GeVPico.list" nFiles="all"/-->
    <!--input URL="catalog:star.bnl.gov?production=P19ie,filetype=daq_reco_picoDst,trgsetupname=production_3p85GeV_fixedTarget_2018,tpx=1,filename~st_physics,runnumber=&run;,sanity=1,storage!=HPSS" nFiles="all"/-->
-   <input URL="catalog:star.bnl.gov?production=P21id,filetype=daq_reco_picoDst,trgsetupname=production_9p8GeV_fixedTarget_2020,tpx=1,filename~st_physics,sanity=1,storage!=hpss" nFiles="7"/>
+   <input URL="catalog:star.bnl.gov?production=P21id,filetype=daq_reco_picoDst,trgsetupname=production_4p59GeV_fixedTarget_2019,tpx=1,filename~st_physics,sanity=1,storage!=hpss" nFiles="7"/>
 
    <!--input URL="catalog:star.bnl.gov?production=P19ie,filetype=daq_reco_picoDst,trgsetupname=production_3p85GeV_fixedTarget_2018,tpx=1,filename~st_physics,sanity=1,storage!=HPSS" nFiles="all"/-->
    
@@ -36,8 +36,8 @@
 	  <ListLocation>./list/</ListLocation>
   </Generator>
 
-  <output fromScratch="*.root" toURL="file:/star/data01/pwg/dchen/Ana/4p5_9p8GeV_2020/qapid/production/" />
-  <output fromScratch="*.log.tgz" toURL="file:/star/data01/pwg/dchen/Ana/4p5_9p8GeV_2020/qapid/log/" />
+  <output fromScratch="*.root" toURL="file:/star/data01/pwg/dchen/Ana/3p2_4p59GeV_2019/qapid/production/" />
+  <output fromScratch="*.log.tgz" toURL="file:/star/data01/pwg/dchen/Ana/3p2_4p59GeV_2019/qapid/log/" />
 
 
 </job>

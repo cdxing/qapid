@@ -24,6 +24,7 @@ class CutManager : public TObject
     bool isGoodTrigger(StPicoDst* );
     bool passEventCut(StPicoDst* );
     bool isTofTrack(StPicoDst*, StPicoTrack* );
+    bool isETofTrack(StPicoDst*, StPicoTrack* );
     bool passTrackEP(StPicoTrack*, float);
     bool passTrackBasic(StPicoTrack* );
     bool isProton(StPicoDst*, StPicoTrack* );

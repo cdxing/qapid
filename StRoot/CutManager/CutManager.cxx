@@ -96,6 +96,25 @@ bool CutManager::isTofTrack(StPicoDst *pico, StPicoTrack *track)
   return b_tofTrack;
 }
 
+bool CutManager::isETofTrack(StPicoDst *pico, StPicoTrack *track)
+{
+  Bool_t b_etofTrack = false;
+  //Double_t d_etofBeta = -999.0;
+  //Double_t d_m2 = 0.0;
+  Int_t trackTofIndex = track->eTofPidTraitsIndex();
+  if(trackTofIndex >= 0) b_etofTrack = true;
+    //d_etofBeta = pico->betofPidTraits(trackTofIndex)->betofBeta();
+
+  //if(d_etofBeta != -999.0)
+    //{
+      //b_etofTrack = true;
+      ///*d_m2 = d_mom*d_mom*( (1.0 / (d_etofBeta*d_etofBeta)) - 1.0 );
+      //h2_beta_vs_qp->Fill(s_charge*d_mom, 1.0/d_etofBeta);
+      //h2_m2_vs_qp->Fill(s_charge*d_mom, d_m2);*/
+    //}
+  return b_etofTrack;
+}
+
 bool CutManager::passTrackBasic(StPicoTrack *track)
 {
     // nHitsFit cut
@@ -165,7 +184,8 @@ bool CutManager::isProton(StPicoDst *pico, StPicoTrack *track)
       d_m2 = d_mom*d_mom*( (1.0 / (d_tofBeta*d_tofBeta)) - 1.0 );
     }
 
-  proton = ((d_TPCnSigmaProton > mConfigs.nSig_pr_low) && (d_TPCnSigmaProton < mConfigs.nSig_pr_high) && (s_charge > 0) && d_mom < 1.3) ||
+  //proton = ((d_TPCnSigmaProton > mConfigs.nSig_pr_low) && (d_TPCnSigmaProton < mConfigs.nSig_pr_high) && (s_charge > 0) && d_mom < 1.3) ||
+  proton = ((d_TPCnSigmaProton > mConfigs.nSig_pr_low) && (d_TPCnSigmaProton < mConfigs.nSig_pr_high) && d_mom < 1.3) ||
   	 ((d_TPCnSigmaProton > mConfigs.nSig_pr_low) &&
          (d_TPCnSigmaProton < mConfigs.nSig_pr_high) &&
          (d_m2 > 0.8) &&

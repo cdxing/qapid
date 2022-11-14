@@ -14,6 +14,8 @@
 #include "StRoot/StPicoEvent/StPicoEpdHit.h"
 #include "StRoot/StPicoEvent/StPicoBTofHit.h"
 #include "StRoot/StPicoEvent/StPicoBTofPidTraits.h"
+#include "StRoot/StPicoEvent/StPicoETofHit.h"
+#include "StRoot/StPicoEvent/StPicoETofPidTraits.h"
 #include "StRoot/StPicoEvent/StPicoTrackCovMatrix.h"
 //#include "StRoot/run/run.h"
 #include "StThreeVectorF.hh"
@@ -122,18 +124,18 @@ Int_t QaPid::Make()
     //cout << "runID = " << runId << endl;
     Int_t refMult = mPicoEvent->refMult();
     Float_t vz = mPicoEvent->primaryVertex().Z();
-    Float_t vx = mPicoEvent->primaryVertex().X();
-    Float_t vy = mPicoEvent->primaryVertex().Y();
+    //Float_t vx = mPicoEvent->primaryVertex().X();
+    //Float_t vy = mPicoEvent->primaryVertex().Y();
 
-    Float_t vzvpd = mPicoEvent->vzVpd();
+    //Float_t vzvpd = mPicoEvent->vzVpd();
     Int_t TOF_Mul = mPicoEvent->btofTrayMultiplicity();
-    Int_t nMatchedToF = mPicoEvent->nBTOFMatch();
-    Float_t zdcX = mPicoEvent->ZDCx();
+    //Int_t nMatchedToF = mPicoEvent->nBTOFMatch();
+    //Float_t zdcX = mPicoEvent->ZDCx();
     
     mHistManager->FillEventQA(mPicoEvent->primaryVertex(),refMult,TOF_Mul,TrkMult);
     mHistManager->FillEventCut(0);
     // vz sign
-    Int_t vz_sign;
+    /*Int_t vz_sign;
     if(vz > 0.0)
     {
         vz_sign = 0;
@@ -141,7 +143,7 @@ Int_t QaPid::Make()
     else
     {
         vz_sign = 1;
-    }
+    }*/
 
     // runIndex
     //const int runIndex = GetRunIndex(runId);
@@ -161,14 +163,14 @@ Int_t QaPid::Make()
         const int cent16 = mCutManager->getCentrality(TrkMult);
 	
 	//std::cout << "cent16: " << cent16 << std::endl;
-        const double reweight = 1.0;
+        //const double reweight = 1.0;
         if(cent16 >  15 || cent16 < 0) return 0;
         mHistManager->FillEventCent(cent16);
         mHistManager->FillEventCut(2);
 
         //const Int_t nToFMatched = mCutManager->getMatchedToF();
         TVector3 mVertexPos = mPicoDst->event()->primaryVertex();
-        float mField = mPicoEvent->bField();
+        //float mField = mPicoEvent->bField();
         Int_t N_pp = 0, N_pm = 0, N_kp = 0, N_km = 0, N_pr = 0;
 
         //cout << "nTracks = " << nTracks << endl;
@@ -184,11 +186,39 @@ Int_t QaPid::Make()
             //StPicoPhysicalHelix helix = track->helix(mField);
             //Float_t dca = helix.geometricSignedDistance(mVertexPos);
             Short_t  s_charge = track->charge();
-            Float_t dca=track->gDCA(mVertexPos).Mag();
+            //Float_t dca=track->gDCA(mVertexPos).Mag();
 	    if(mCutManager->isTofTrack(mPicoDst,track)) mHistManager->FillTrackTof(mPicoDst,track);
+		      
+		//Fill ETOF Mass if availabe
+		      Int_t etofPidIndex = track->eTofPidTraitsIndex();
+
+	    if(mCutManager->isETofTrack(mPicoDst,track)){
+	        StPicoETofPidTraits * epidTraits = mPicoDst->etofPidTraits( etofPidIndex );
+
+           	//btof quality cuts
+           	if (epidTraits->matchFlag() > 0)
+           	 {
+           	   if (epidTraits->beta() > 0.0 &&
+           	       TMath::Abs(epidTraits->deltaX()) < 5.0 &&
+           	       TMath::Abs(epidTraits->deltaY()) < 5.0 )
+           	     {
+           	       double beta = epidTraits->beta();
+           	       double momMag = track->pMom().Mag();
+           	       double mass2 = ( momMag*momMag*( 1 - beta*beta ) / ( beta*beta ) );
+
+           	       double etofProtonMass=TMath::Sqrt(mass2);
+			std::cout<< "etof Proton Mass: "<<etofProtonMass<<std::endl;
+	   		mHistManager->FillProtonETof(track,configs.y_mid); 
+			std::cout<< "test "<<std::endl;
+		
+           	     }
+           	 }  
+	    } 
 	    if(mCutManager->isProton(mPicoDst,track))
 	    {
+		std::cout<< "test is proton"<<std::endl;
 	   	mHistManager->FillProton(mPicoDst,track,configs.y_mid); 
+		std::cout<< "test Fill proton"<<std::endl;
 		N_pr++;
 	    }
 	    if(mCutManager->isKaon(mPicoDst,track))
