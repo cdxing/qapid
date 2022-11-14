@@ -296,11 +296,11 @@ void HistManager::FillProtonETof(StPicoTrack *track, Double_t y_mid)
   //h_pT_pr->Fill(d_pT);
   //h_dndy_pr->Fill(mRapidity);
   if(s_charge > 0){
-	std::cout<< "fill etof proton"<<std::endl;
+	//std::cout<< "fill etof proton"<<std::endl;
   	h2_pT_vs_yCM_pr_ETof->Fill(mRapidity - y_mid, d_pT);
   }else
   if(s_charge < 0){
-	std::cout<< "fill etof pbar"<<std::endl;
+	//std::cout<< "fill etof pbar"<<std::endl;
   	h2_pT_vs_yCM_pbar_ETof->Fill(mRapidity - y_mid, d_pT);
   }
   

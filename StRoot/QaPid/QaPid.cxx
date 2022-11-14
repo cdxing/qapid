@@ -207,18 +207,18 @@ Int_t QaPid::Make()
            	       double mass2 = ( momMag*momMag*( 1 - beta*beta ) / ( beta*beta ) );
 
            	       double etofProtonMass=TMath::Sqrt(mass2);
-			std::cout<< "etof Proton Mass: "<<etofProtonMass<<std::endl;
+			//std::cout<< "etof Proton Mass: "<<etofProtonMass<<std::endl;
 	   		mHistManager->FillProtonETof(track,configs.y_mid); 
-			std::cout<< "test "<<std::endl;
+			//std::cout<< "test "<<std::endl;
 		
            	     }
            	 }  
 	    } 
 	    if(mCutManager->isProton(mPicoDst,track))
 	    {
-		std::cout<< "test is proton"<<std::endl;
+		//std::cout<< "test is proton"<<std::endl;
 	   	mHistManager->FillProton(mPicoDst,track,configs.y_mid); 
-		std::cout<< "test Fill proton"<<std::endl;
+		//std::cout<< "test Fill proton"<<std::endl;
 		N_pr++;
 	    }
 	    if(mCutManager->isKaon(mPicoDst,track))
