@@ -45,6 +45,10 @@ class ConstManager
   static Float_t mMassPion; // 0.13957
   static Float_t mMassKaon; // 0.49368
   static Float_t mMassProton; // 0.93827
+  static Float_t D_M0_DE;   // Deuteron
+  static Float_t D_M0_TR;   // Triton
+  static Float_t D_M0_HE3;   // Helium-3
+  static Float_t D_M0_AL;   // Alpha
   static Float_t mVzVpdDiffMax; // 3
   static std::map<float,float> mSigScaleMap;
 

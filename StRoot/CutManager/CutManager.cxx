@@ -4,10 +4,21 @@
 #include "StRoot/StPicoEvent/StPicoEvent.h"
 #include "StRoot/StPicoEvent/StPicoTrack.h"
 #include "StRoot/StPicoEvent/StPicoBTofPidTraits.h"
+
+// Bichsel header
+#include "StRoot/StBichsel/Bichsel.h"
+
 #include "StMessMgr.h"
 
 ClassImp(CutManager)
 
+// Bichsel Function
+Double_t bichselZ(Double_t *x,Double_t *par) 
+{
+  Double_t pove   = x[0];
+  Double_t poverm = pove/par[0];
+  return TMath::Exp(Bichsel::Instance()->GetMostProbableZ(TMath::Log10(poverm),par[1]));
+}
     //StRefMultCorr* CutManager::mRefMultCorr = NULL; // shaowei
     //---------------------------------------------------------------------------------
 
@@ -168,6 +179,96 @@ bool CutManager::passTrackEP(StPicoTrack *track, float dca)
 }
 //---------------------------------------------------------------------------------
 // PID
+bool CutManager::isTriton(StPicoDst *pico, StPicoTrack *track)
+{
+  //=========================================================
+  //          Bichsel Function Setup
+  //=========================================================
+  Double_t log2dx = 1.0;
+  Double_t xStart = 0.01;
+  Double_t xStop  = 3.0;
+  Int_t npx = 10000;
+  //                      Mass  log2(dx)
+  Double_t params[2] = {  1.0,   log2dx  };
+
+  params[0] = ConstManager::D_M0_TR;
+  TF1 *bichselZ_tr = new TF1(Form("BichselZ_tr_log2dx_%i",(int)log2dx),bichselZ,xStart,xStop,2);
+  if (!bichselZ_tr) { std::cout << "De function error" << std::endl; return 1; }
+  bichselZ_tr->SetParameters(params); 
+  bichselZ_tr->SetNpx(npx);
+
+  Bool_t triton   = false;
+  Double_t d_tofBeta = -999.0;
+  Double_t d_m2 = -999.0;
+  Double_t d_mom = track->pMom().Mag();
+  Short_t  s_charge = track->charge();
+  Float_t d_dEdx = track->dEdx();
+  Double_t d_zTriton = (s_charge == 1) ? TMath::Log(d_dEdx / bichselZ_tr->Eval(d_mom)) : -999.0;
+  triton = (d_zTriton > mConfigs.z_tr_low) && (d_zTriton < mConfigs.z_tr_high);
+  Int_t trackTofIndex = track->bTofPidTraitsIndex();
+  if(trackTofIndex >= 0)
+    d_tofBeta = pico->btofPidTraits(trackTofIndex)->btofBeta();
+  if(d_tofBeta != -999.0)
+    {
+      d_m2 = d_mom*d_mom*( (1.0 / (d_tofBeta*d_tofBeta)) - 1.0 );
+    }
+
+  triton = ((d_zTriton > mConfigs.z_tr_low) && (d_zTriton < mConfigs.z_tr_high) ) ||
+  	 ( (d_tofBeta != -999.0)&&
+		   (d_zTriton > mConfigs.z_tr_low) &&
+		    (d_zTriton < mConfigs.z_tr_high) &&
+		    (d_m2 > mConfigs.m2_tr_low) &&
+		    (d_m2 < mConfigs.m2_tr_high)
+	 );
+
+  return triton;
+}
+
+bool CutManager::isDeuteron(StPicoDst *pico, StPicoTrack *track)
+{
+  //=========================================================
+  //          Bichsel Function Setup
+  //=========================================================
+  Double_t log2dx = 1.0;
+  Double_t xStart = 0.01;
+  Double_t xStop  = 3.0;
+  Int_t npx = 10000;
+  //                      Mass  log2(dx)
+  Double_t params[2] = {  1.0,   log2dx  };
+
+  params[0] = ConstManager::D_M0_DE;
+  TF1 *bichselZ_de = new TF1(Form("BichselZ_de_log2dx_%i",(int)log2dx),bichselZ,xStart,xStop,2);
+  if (!bichselZ_de) { std::cout << "De function error" << std::endl; return 1; }
+  bichselZ_de->SetParameters(params); 
+  bichselZ_de->SetNpx(npx);
+
+  Bool_t deuteron   = false;
+  Double_t d_tofBeta = -999.0;
+  Double_t d_m2 = -999.0;
+  Double_t d_mom = track->pMom().Mag();
+  Short_t  s_charge = track->charge();
+  Float_t d_dEdx = track->dEdx();
+  Double_t d_zDeuteron = (s_charge == 1) ? TMath::Log(d_dEdx / bichselZ_de->Eval(d_mom)) : -999.0;
+  deuteron = (d_zDeuteron > mConfigs.z_de_low) && (d_zDeuteron < mConfigs.z_de_high);
+  Int_t trackTofIndex = track->bTofPidTraitsIndex();
+  if(trackTofIndex >= 0)
+    d_tofBeta = pico->btofPidTraits(trackTofIndex)->btofBeta();
+  if(d_tofBeta != -999.0)
+    {
+      d_m2 = d_mom*d_mom*( (1.0 / (d_tofBeta*d_tofBeta)) - 1.0 );
+    }
+
+  deuteron = ((d_zDeuteron > mConfigs.z_de_low) && (d_zDeuteron < mConfigs.z_de_high) ) ||
+  	 ( (d_tofBeta != -999.0)&&
+		   (d_zDeuteron > mConfigs.z_de_low) &&
+		    (d_zDeuteron < mConfigs.z_de_high) &&
+		    (d_m2 > mConfigs.m2_de_low) &&
+		    (d_m2 < mConfigs.m2_de_high)
+	 );
+
+  return deuteron;
+}
+
 bool CutManager::isProton(StPicoDst *pico, StPicoTrack *track)
 {
   Double_t d_TPCnSigmaProton = track->nSigmaProton();

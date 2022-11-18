@@ -192,6 +192,20 @@ Int_t QaPid::Make()
 		//Fill ETOF Mass if availabe
 		      Int_t etofPidIndex = track->eTofPidTraitsIndex();
 
+	    if(mCutManager->isTriton(mPicoDst,track))
+	    {
+		//std::cout<< "test is proton"<<std::endl;
+	   	mHistManager->FillTriton(mPicoDst,track,configs.y_mid); 
+		//std::cout<< "test Fill proton"<<std::endl;
+		//N_pr++;
+	    }
+	    if(mCutManager->isDeuteron(mPicoDst,track))
+	    {
+		//std::cout<< "test is proton"<<std::endl;
+	   	mHistManager->FillDeuteron(mPicoDst,track,configs.y_mid); 
+		//std::cout<< "test Fill proton"<<std::endl;
+		//N_pr++;
+	    }
 	    if(mCutManager->isETofTrack(mPicoDst,track)){
 	        StPicoETofPidTraits * epidTraits = mPicoDst->etofPidTraits( etofPidIndex );
 

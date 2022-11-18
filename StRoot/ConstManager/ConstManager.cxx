@@ -41,6 +41,10 @@ Float_t ConstManager::mNSigmaProtonMax = 2.5;
 Float_t ConstManager::mMassPion = 0.13957;
 Float_t ConstManager::mMassKaon = 0.49368;
 Float_t ConstManager::mMassProton = 0.93827;
+Float_t ConstManager::D_M0_DE = 1.875613;   // Deuteron
+Float_t ConstManager::D_M0_TR = 2.808921;   // Triton
+Float_t ConstManager::D_M0_HE3 = 2.809414;   // Helium-3
+Float_t ConstManager::D_M0_AL = 3.727379;   // Alpha
 Float_t ConstManager::mVzVpdDiffMax = 3.0;
 Float_t ConstManager::mEta_Gap[4] = {0.05,0.10,0.20,0.50};
 
