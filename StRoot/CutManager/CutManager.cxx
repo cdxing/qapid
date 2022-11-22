@@ -213,13 +213,56 @@ bool CutManager::isTriton(StPicoDst *pico, StPicoTrack *track)
       d_m2 = d_mom*d_mom*( (1.0 / (d_tofBeta*d_tofBeta)) - 1.0 );
     }
 
-  triton = ((d_zTriton > mConfigs.z_tr_low) && (d_zTriton < mConfigs.z_tr_high) ) ||
-  	 ( (d_tofBeta != -999.0)&&
-		   (d_zTriton > mConfigs.z_tr_low) &&
-		    (d_zTriton < mConfigs.z_tr_high) &&
-		    (d_m2 > mConfigs.m2_tr_low) &&
-		    (d_m2 < mConfigs.m2_tr_high)
-	 );
+//  triton = ((d_zTriton > mConfigs.z_tr_low) && (d_zTriton < mConfigs.z_tr_high) ) ||
+//  	 ( (d_tofBeta != -999.0)&&
+//		   (d_zTriton > mConfigs.z_tr_low) &&
+//		    (d_zTriton < mConfigs.z_tr_high) &&
+//		    (d_m2 > mConfigs.m2_tr_low) &&
+//		    (d_m2 < mConfigs.m2_tr_high)
+//	 );
+		  // TRITON
+		  if (d_mom >= 1.0 && d_mom < 4.0)
+		    {
+		      if (d_mom >= 1.0 && d_mom < 1.1 && d_zTriton > -0.332011 && d_zTriton < 0.251103) triton = true;
+		      else if (d_mom >= 1.1 && d_mom < 1.2 && d_zTriton > -0.310412 && d_zTriton < 0.296090) triton = true;
+		      else if (d_mom >= 1.2 && d_mom < 1.3 && d_zTriton > -0.293322 && d_zTriton < 0.334467) triton = true;
+		      else if (d_mom >= 1.3 && d_mom < 1.4 && d_zTriton > -0.270550 && d_zTriton < 0.373857) triton = true;
+		      else if (d_mom >= 1.4 && d_mom < 1.5 && d_zTriton > -0.248412 && d_zTriton < 0.406237) triton = true;
+		      else if (d_mom >= 1.5 && d_mom < 1.6 && d_zTriton > -0.228044 && d_zTriton < 0.333261) triton = true;
+		      else if (d_mom >= 1.6 && d_mom < 1.7 && d_zTriton > -0.210093 && d_zTriton < 0.343588) triton = true;
+		      else if (d_mom >= 1.7 && d_mom < 1.8 && d_zTriton > -0.190900 && d_zTriton < 0.332586) triton = true;
+		      else if (d_mom >= 1.8 && d_mom < 1.9 && d_zTriton > -0.183153 && d_zTriton < 0.334197) triton = true;
+		      else if (d_mom >= 1.9 && d_mom < 2.0 && d_zTriton > -0.166020 && d_zTriton < 0.323303) triton = true;
+		      else if (d_mom >= 2.0 && d_mom < 2.1 && d_zTriton > -0.102334 && d_zTriton < 0.307724) triton = true;
+		      else if (d_mom >= 2.1 && d_mom < 2.2 && d_zTriton > -0.091053 && d_zTriton < 0.294345) triton = true;
+		      else if (d_mom >= 2.2 && d_mom < 2.3 && d_zTriton > -0.076457 && d_zTriton < 0.285978) triton = true;
+		      else if (d_mom >= 2.3 && d_mom < 2.4 && d_zTriton > -0.055669 && d_zTriton < 0.253769) triton = true;
+		      else if (d_mom >= 2.4 && d_mom < 2.5 && d_zTriton > -0.035848 && d_zTriton < 0.254487) triton = true;
+		      else if (d_mom >= 2.5 && d_mom < 2.6 && d_zTriton > -0.027266 && d_zTriton < 0.249350) triton = true;
+		      else if (d_mom >= 2.6 && d_mom < 2.7 && d_zTriton > -0.028152 && d_zTriton < 0.236713) triton = true;
+		      else if (d_mom >= 2.7 && d_mom < 2.8 && d_zTriton > -0.027867 && d_zTriton < 0.227672) triton = true;
+		      else if (d_mom >= 2.8 && d_mom < 2.9 && d_zTriton > -0.024675 && d_zTriton < 0.222215) triton = true;
+		      else if (d_mom >= 2.9 && d_mom < 3.0 && d_zTriton > -0.019179 && d_zTriton < 0.227362) triton = true;
+		      else if (d_mom >= 3.0 && d_mom < 3.1 && d_zTriton > -0.013267 && d_zTriton < 0.236052) triton = true;
+		      else if (d_mom >= 3.1 && d_mom < 3.2 && d_zTriton > -0.007851 && d_zTriton < 0.246071) triton = true;
+		      else if (d_mom >= 3.2 && d_mom < 3.3 && d_zTriton > -0.006311 && d_zTriton < 0.254907) triton = true;
+		      else if (d_mom >= 3.3 && d_mom < 3.4 && d_zTriton > 0.019834 && d_zTriton < 0.244291) triton = true;
+		      else if (d_mom >= 3.4 && d_mom < 3.5 && d_zTriton > 0.031221 && d_zTriton < 0.273652) triton = true;
+		      else if (d_mom >= 3.5 && d_mom < 3.6 && d_zTriton > 0.068248 && d_zTriton < 0.257484) triton = true;
+		      else if (d_mom >= 3.6 && d_mom < 3.7 && d_zTriton > 0.088804 && d_zTriton < 0.260799) triton = true;
+		      else if (d_mom >= 3.7 && d_mom < 3.8 && d_zTriton > 0.091490 && d_zTriton < 0.271776) triton = true;
+		      else if (d_mom >= 3.8 && d_mom < 3.9 && d_zTriton > 0.106161 && d_zTriton < 0.285652) triton = true;
+		      else if (d_mom >= 3.9 && d_mom < 4.0 && d_zTriton > 0.103653 && d_zTriton < 0.299234) triton = true;
+		    }
+		  //else if (tofTrack)
+		  else if (d_tofBeta != -999.0)
+		    {
+		      if (d_zTriton > mConfigs.z_tr_low &&
+			  d_zTriton < mConfigs.z_tr_high &&
+			  d_m2 > mConfigs.m2_tr_low &&
+			  d_m2 < mConfigs.m2_tr_high)
+			triton = true;
+		    }
 
   return triton;
 }
@@ -258,14 +301,52 @@ bool CutManager::isDeuteron(StPicoDst *pico, StPicoTrack *track)
       d_m2 = d_mom*d_mom*( (1.0 / (d_tofBeta*d_tofBeta)) - 1.0 );
     }
 
-  deuteron = ((d_zDeuteron > mConfigs.z_de_low) && (d_zDeuteron < mConfigs.z_de_high) ) ||
-  	 ( (d_tofBeta != -999.0)&&
-		   (d_zDeuteron > mConfigs.z_de_low) &&
-		    (d_zDeuteron < mConfigs.z_de_high) &&
-		    (d_m2 > mConfigs.m2_de_low) &&
-		    (d_m2 < mConfigs.m2_de_high)
-	 );
+//  deuteron = ((d_zDeuteron > mConfigs.z_de_low) && (d_zDeuteron < mConfigs.z_de_high) ) ||
+//  	 ( (d_tofBeta != -999.0)&&
+//		   (d_zDeuteron > mConfigs.z_de_low) &&
+//		    (d_zDeuteron < mConfigs.z_de_high) &&
+//		    (d_m2 > mConfigs.m2_de_low) &&
+//		    (d_m2 < mConfigs.m2_de_high)
+//	 );
 
+		  if (d_mom >= 0.4 && d_mom < 3.0)
+		    {
+		      if (d_mom >= 0.4 && d_mom < 0.5 && d_zDeuteron > -0.476112 && d_zDeuteron < 0.248539) deuteron = true;
+		      else if (d_mom >= 0.5 && d_mom < 0.6 && d_zDeuteron > -0.445644 && d_zDeuteron < 0.311067) deuteron = true;
+		      else if (d_mom >= 0.6 && d_mom < 0.7 && d_zDeuteron > -0.43008 && d_zDeuteron < 0.331624) deuteron = true;
+		      else if (d_mom >= 0.7 && d_mom < 0.8 && d_zDeuteron > -0.416061 && d_zDeuteron < 0.341399) deuteron = true;
+		      else if (d_mom >= 0.8 && d_mom < 0.9 && d_zDeuteron > -0.404842 && d_zDeuteron < 0.338091) deuteron = true;
+		      else if (d_mom >= 0.9 && d_mom < 1.0 && d_zDeuteron > -0.37419 && d_zDeuteron < 0.337724) deuteron = true;
+		      else if (d_mom >= 1.0 && d_mom < 1.1 && d_zDeuteron > -0.32986 && d_zDeuteron < 0.332241) deuteron = true;
+		      else if (d_mom >= 1.1 && d_mom < 1.2 && d_zDeuteron > -0.332995 && d_zDeuteron < 0.325582) deuteron = true;
+		      else if (d_mom >= 1.2 && d_mom < 1.3 && d_zDeuteron > -0.306145 && d_zDeuteron < 0.319532) deuteron = true;
+		      else if (d_mom >= 1.3 && d_mom < 1.4 && d_zDeuteron > -0.275987 && d_zDeuteron < 0.313227) deuteron = true;
+		      else if (d_mom >= 1.4 && d_mom < 1.5 && d_zDeuteron > -0.250464 && d_zDeuteron < 0.301911) deuteron = true;
+		      else if (d_mom >= 1.5 && d_mom < 1.6 && d_zDeuteron > -0.215135 && d_zDeuteron < 0.302149) deuteron = true;
+		      else if (d_mom >= 1.6 && d_mom < 1.7 && d_zDeuteron > -0.176733 && d_zDeuteron < 0.308644) deuteron = true;
+		      else if (d_mom >= 1.7 && d_mom < 1.8 && d_zDeuteron > -0.160866 && d_zDeuteron < 0.29673) deuteron = true;
+		      else if (d_mom >= 1.8 && d_mom < 1.9 && d_zDeuteron > -0.149249 && d_zDeuteron < 0.281362) deuteron = true;
+		      else if (d_mom >= 1.9 && d_mom < 2.0 && d_zDeuteron > -0.0830817 && d_zDeuteron < 0.273483) deuteron = true;
+		      else if (d_mom >= 2.0 && d_mom < 2.1 && d_zDeuteron > -0.065219 && d_zDeuteron < 0.269654) deuteron = true;
+		      else if (d_mom >= 2.1 && d_mom < 2.2 && d_zDeuteron > -0.04952 && d_zDeuteron < 0.265074) deuteron = true;
+		      else if (d_mom >= 2.2 && d_mom < 2.3 && d_zDeuteron > -0.0358834 && d_zDeuteron < 0.258749) deuteron = true;
+		      else if (d_mom >= 2.3 && d_mom < 2.4 && d_zDeuteron > -0.0218641 && d_zDeuteron < 0.25294) deuteron = true;
+		      else if (d_mom >= 2.4 && d_mom < 2.5 && d_zDeuteron > -0.0114193 && d_zDeuteron < 0.244108) deuteron = true;
+		      else if (d_mom >= 2.5 && d_mom < 2.6 && d_zDeuteron > -0.000659632 && d_zDeuteron < 0.205416) deuteron = true;
+		      else if (d_mom >= 2.6 && d_mom < 2.7 && d_zDeuteron > 0.010662  && d_zDeuteron < 0.198006) deuteron = true;
+		      else if (d_mom >= 2.7 && d_mom < 2.8 && d_zDeuteron > 0.0203815 && d_zDeuteron < 0.189092) deuteron = true;
+		      else if (d_mom >= 2.8 && d_mom < 2.9 && d_zDeuteron > 0.0313737 && d_zDeuteron < 0.181285) deuteron = true;
+		      else if (d_mom >= 2.9 && d_mom < 3.0 && d_zDeuteron > 0.0446902 && d_zDeuteron < 0.174561) deuteron = true;
+		    }
+		  //else if (tofTrack)
+		  else if (d_tofBeta != -999.0)
+		    {
+		      if (d_zDeuteron > mConfigs.z_de_low &&
+			  d_zDeuteron < mConfigs.z_de_high &&
+			  d_m2 > mConfigs.m2_de_low &&
+			  d_m2 < mConfigs.m2_de_high)
+			deuteron = true;
+		    }
   return deuteron;
 }
 
