@@ -37,7 +37,8 @@ CutManager::~CutManager()
 
 bool CutManager::isGoodTrigger(StPicoDst *pico)
 {
-    Bool_t b_good_trig = false;
+    //Bool_t b_good_trig = false;
+    Bool_t b_good_trig = true; // disable trigger cut
     StPicoEvent *event = pico->event();
     std::vector<UInt_t> triggerIDs = event->triggerIds();
     for (UInt_t i = 0; i < triggerIDs.size(); i++)
@@ -77,9 +78,18 @@ bool CutManager::passEventCut(StPicoDst *pico)
     //std::cout<< "event cut test 2 "<<std::endl;
     //if(event->btofTrayMultiplicity()<2)return kFALSE;
     // vr cut
-    if(sqrt(vx*vx+(vy+2)*(vy+2)) > mConfigs.r_vtx)
-    {
-        return kFALSE;
+    if(mConfigs.fixed_target==1){ // FXT
+    	if(sqrt(vx*vx+(vy+2)*(vy+2)) > mConfigs.r_vtx)
+    	{
+    	    return kFALSE;
+    	}
+    } else 
+    if(mConfigs.fixed_target==0){ // COL
+    	if(sqrt(vx*vx+vy*vy) > mConfigs.r_vtx)
+    	{
+    	    return kFALSE;
+    	}
+	    
     }
     //std::cout<< "event cut test 3 "<<std::endl;
     // vz-vzVpd cut for 200 GeV
