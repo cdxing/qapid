@@ -121,7 +121,7 @@ Int_t QaPid::Make()
     // RefMult
     Int_t runId = mPicoEvent->runId();
 
-    //cout << "runID = " << runId << endl;
+    cout << "runID = " << runId << endl;
     Int_t refMult = mPicoEvent->refMult();
     Float_t vz = mPicoEvent->primaryVertex().Z();
     //Float_t vx = mPicoEvent->primaryVertex().X();
@@ -158,7 +158,7 @@ Int_t QaPid::Make()
         //mRefMultCorr->initEvent(refMult, vz, zdcX);
         //const Int_t cent9 = mRefMultCorr->getCentralityBin9();
         //const Double_t reweight = mRefMultCorr->getWeight();
-	//std::cout << "refMult: " << refMult << std::endl;
+	std::cout << "refMult: " << refMult << std::endl;
 	//std::cout << "TrkMult: " << TrkMult << std::endl;
         const int cent16 = mCutManager->getCentrality(TrkMult);
 	
