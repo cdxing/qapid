@@ -34,3 +34,6 @@
 
 # cons compiling
 *.consign
+
+# vim temp files
+*.swp
