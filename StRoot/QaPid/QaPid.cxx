@@ -162,7 +162,7 @@ Int_t QaPid::Make()
 	//std::cout << "TrkMult: " << TrkMult << std::endl;
         const int cent16 = mCutManager->getCentrality(TrkMult);
 	
-	//std::cout << "cent16: " << cent16 << std::endl;
+	std::cout << "cent16: " << cent16 << std::endl;
         //const double reweight = 1.0;
         if(cent16 >  15 || cent16 < 0) return 0;
         mHistManager->FillEventCent(cent16);
@@ -224,7 +224,6 @@ Int_t QaPid::Make()
 			//std::cout<< "etof Proton Mass: "<<etofProtonMass<<std::endl;
 	   		mHistManager->FillProtonETof(track,configs.y_mid); 
 			//std::cout<< "test "<<std::endl;
-		
            	     }
            	 }  
 	    } 

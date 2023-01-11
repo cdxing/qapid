@@ -37,7 +37,8 @@ CutManager::~CutManager()
 
 bool CutManager::isGoodTrigger(StPicoDst *pico)
 {
-    Bool_t b_good_trig = false;
+    //Bool_t b_good_trig = false;
+    Bool_t b_good_trig = true; // disable trigger cut
     StPicoEvent *event = pico->event();
     std::vector<UInt_t> triggerIDs = event->triggerIds();
     for (UInt_t i = 0; i < triggerIDs.size(); i++)
@@ -77,10 +78,20 @@ bool CutManager::passEventCut(StPicoDst *pico)
     //std::cout<< "event cut test 2 "<<std::endl;
     //if(event->btofTrayMultiplicity()<2)return kFALSE;
     // vr cut
-    if(sqrt(vx*vx+(vy+2)*(vy+2)) > mConfigs.r_vtx)
-    {
-        return kFALSE;
-    }
+    if(mConfigs.fixed_target==1){ // FXT
+        if(sqrt(vx*vx+(vy+2)*(vy+2)) > mConfigs.r_vtx)
+        {   
+            return kFALSE;
+        }   
+    } else 
+    if(mConfigs.fixed_target==0){ // COL
+        if(sqrt(vx*vx+vy*vy) > mConfigs.r_vtx)
+        {   
+            return kFALSE;
+        }   
+                
+    }   
+
     //std::cout<< "event cut test 3 "<<std::endl;
     // vz-vzVpd cut for 200 GeV
 
@@ -438,7 +449,34 @@ Int_t CutManager::getCentrality(int gRefMult)
 		centHigh[i] = centHigh_3p0GeV[i];
 		centLow[i]  = centLow_3p0GeV[i];
         }
-    }
+
+    }else 
+    if (mConfigs.sqrt_s_NN == 7.7 && mConfigs.fixed_target == 1)
+    {
+        //std::cout << "3GeV centrality" << std::endl;
+        // temporary centrality defintion
+        // https://drupal.star.bnl.gov/STAR/system/files/Centrality%20Study%20at%2014p6_final_0.pdf
+        int centHigh_7p7GeVFxt[16]={9,13,18,24,32,41,53,67,84,103,127,154,185,223,270,500};
+        int centLow_7p7GeVFxt[16] ={6,10,14,19,25,33,42,54,68,85 ,104,128,155,186,224,271};
+        for(int i = 0; i<16 ; i++)
+        {   
+                centHigh[i] = centHigh_7p7GeVFxt[i];
+                centLow[i]  = centLow_7p7GeVFxt[i];
+        }
+    }   else
+    if (mConfigs.sqrt_s_NN == 7.7 && mConfigs.fixed_target == 0)
+    {
+        //std::cout << "3GeV centrality" << std::endl;
+        // temporary centrality defintion
+	// https://drupal.star.bnl.gov/STAR/system/files/phi_v2_7p7.pdf
+        int centHigh_7p7GeVCol[16]={8,11,15,20,26,34,43,54,67,82 ,99 ,119,142,170,205,500};
+        int centLow_7p7GeVCol[16] ={5,9 ,12,16,21,27,35,44,55,68 ,83 ,100,120,143,171,206};
+        for(int i = 0; i<16 ; i++)
+        {   
+                centHigh[i] = centHigh_7p7GeVCol[i];
+                centLow[i]  = centLow_7p7GeVCol[i];
+        }
+    }   
     if      (gRefMult>=centLow[15] && gRefMult<=centHigh[15]) centrality=15;
     else if (gRefMult>=centLow[14] && gRefMult<=centHigh[14]) centrality=14;
     else if (gRefMult>=centLow[13] && gRefMult<=centHigh[13]) centrality=13;

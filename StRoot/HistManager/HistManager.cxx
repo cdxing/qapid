@@ -88,7 +88,9 @@ void HistManager::InitQAPID()
   h2_dEdx_vs_qp = new TH2D("h2_dEdx_vs_qp", "dE/dx vs q|p|;q|p| (GeV);dE/dx (keV/cm)", 800, -2, 6, 1000, 0, 20);
   h2_dEdx_vs_qp_half = new TH2D("h2_dEdx_vs_qp_half", "dE/dx vs q|p|;q|p| (GeV);dE/dx (keV/cm)", 600, 0, 6, 1000, 0, 20);
   h2_beta_vs_qp = new TH2D("h2_beta_vs_qp","1/#beta vs Momentum;q*|p| (GeV);1/#beta", 300, -3, 3, 300, 0.5, 3.5);
-  h2_m2_vs_qp = new TH2D("h2_m2_vs_qp", "m^2 vs q*|p|;q*|p| (GeV);m^2 (GeV^2)", 1000, -4, 6, 2240, -0.1, 11.1);
+  //h2_m2_vs_qp = new TH2D("h2_m2_vs_qp", "m^2 vs q*|p|;q*|p| (GeV);m^2 (GeV^2)", 1000, -4, 6, 2240, -0.1, 11.1);
+  h2_m2_vs_qp = new TH2D("h2_m2_vs_qp", "m^2 vs q*|p|;q*|p| (GeV);m^2 (GeV^2)", 400, -4, 4, 1010, -0.1, 20.1);
+
 
   h_pT_pp = new TH1D("h_pT_pp","#pi^{+} p_{T};p_{T} (GeV/c);Tracks",1000,0.0,5.0);
   h_pT_pm = new TH1D("h_pT_pm","#pi^{-} p_{T}; p_{T} (GeV/c);Tracks",1000,0.0,5.0);
@@ -170,7 +172,9 @@ void HistManager::InitQAPID()
   h2_pT_vs_yCM_pbar = new TH2D("h2_pT_vs_yCM_pbar", "Anti-Proton;y-y_{mid};p_{T} (GeV/c)",  422, -2.11, 2.11, 300, 0, 3.0);
   h2_pT_vs_yCM_pbar_ETof = new TH2D("h2_pT_vs_yCM_pbar_ETof", "Anti-Proton;y-y_{mid};p_{T} (GeV/c)",  422, -2.11, 2.11, 300, 0, 3.0);
   h2_pT_vs_yCM_de = new TH2D("h2_pT_vs_yCM_de", "Deuteron;y-y_{mid};p_{T} (GeV/c)",  422, -2.11, 2.11, 300, 0, 3.0);
+  h2_pT_vs_yCM_de_ETof = new TH2D("h2_pT_vs_yCM_de_ETof", "Deuteron;y-y_{mid};p_{T} (GeV/c)",  422, -2.11, 2.11, 300, 0, 3.0);
   h2_pT_vs_yCM_tr = new TH2D("h2_pT_vs_yCM_tr", "Triton;y-y_{mid};p_{T} (GeV/c)",  422, -2.11, 2.11, 300, 0, 3.0);
+  h2_pT_vs_yCM_tr_ETof = new TH2D("h2_pT_vs_yCM_tr_ETof", "Triton;y-y_{mid};p_{T} (GeV/c)",  422, -2.11, 2.11, 300, 0, 3.0);
 
 }
 
@@ -264,6 +268,38 @@ void HistManager::FillTrackCut(Int_t CutID)
 }
 //----------------------------------------------------------------------------
 // test the eToF
+void HistManager::FillTritonETof(StPicoTrack *track, Double_t y_mid)
+{
+  Double_t d_pT = track->pPt();
+  Double_t d_px = track->pMom().X();
+  Double_t d_py = track->pMom().Y();
+  Double_t d_pz = track->pMom().Z();
+  Short_t  s_charge = track->charge();
+  TLorentzVector ltrack;
+  ltrack.SetXYZM(d_px,d_py,d_pz,ConstManager::D_M0_TR);
+  Double_t mRapidity = ltrack.Rapidity();
+
+  if(s_charge > 0){
+	//std::cout<< "fill etof proton"<<std::endl;
+  	h2_pT_vs_yCM_tr_ETof->Fill(mRapidity - y_mid, d_pT);
+  }
+}
+void HistManager::FillDeuteronETof(StPicoTrack *track, Double_t y_mid)
+{
+  Double_t d_pT = track->pPt();
+  Double_t d_px = track->pMom().X();
+  Double_t d_py = track->pMom().Y();
+  Double_t d_pz = track->pMom().Z();
+  Short_t  s_charge = track->charge();
+  TLorentzVector ltrack;
+  ltrack.SetXYZM(d_px,d_py,d_pz,ConstManager::D_M0_DE);
+  Double_t mRapidity = ltrack.Rapidity();
+
+  if(s_charge > 0){
+	//std::cout<< "fill etof deuteron"<<std::endl;
+  	h2_pT_vs_yCM_de_ETof->Fill(mRapidity - y_mid, d_pT);
+  }
+}
 //void HistManager::FillProtonEToF(StPicoDst *pico, StPicoTrack *track, Double_t y_mid)
 void HistManager::FillProtonETof(StPicoTrack *track, Double_t y_mid)
 {
@@ -571,6 +607,7 @@ void HistManager::WriteQAPID()
     h_pT_tr->Write();    
     h_dndy_tr->Write();
     h2_pT_vs_yCM_tr->Write();
+    h2_pT_vs_yCM_tr_ETof->Write();
     h2_dEdx_vs_qp_tr->Write();
     h2_beta_vs_qp_tr->Write();
     h2_m2_vs_qp_tr->Write();
@@ -580,6 +617,7 @@ void HistManager::WriteQAPID()
     h_pT_de->Write();    
     h_dndy_de->Write();
     h2_pT_vs_yCM_de->Write();
+    h2_pT_vs_yCM_de_ETof->Write();
     h2_dEdx_vs_qp_de->Write();
     h2_beta_vs_qp_de->Write();
     h2_m2_vs_qp_de->Write();

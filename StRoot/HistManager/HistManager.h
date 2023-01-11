@@ -36,7 +36,9 @@ class HistManager
     void FillTrackCut(Int_t CutID); // 
     // PID 
     void FillTriton(StPicoDst *pico, StPicoTrack *PicoTrack, Double_t y_mid);  
+    void FillTritonETof(StPicoTrack *track, Double_t y_mid); // ETof test
     void FillDeuteron(StPicoDst *pico, StPicoTrack *PicoTrack, Double_t y_mid);  
+    void FillDeuteronETof(StPicoTrack *track, Double_t y_mid); // ETof test
     void FillProtonETof(StPicoTrack *track, Double_t y_mid); // ETof test
     void FillProton(StPicoDst *pico, StPicoTrack *PicoTrack, Double_t y_mid);  
     void FillKaon(StPicoDst *pico, StPicoTrack *PicoTrack, Double_t y_mid); 
@@ -129,7 +131,9 @@ class HistManager
     TH2D*                h2_pT_vs_yCM_pbar;
     TH2D*                h2_pT_vs_yCM_pbar_ETof;
     TH2D*                h2_pT_vs_yCM_de;
+    TH2D*                h2_pT_vs_yCM_de_ETof;
     TH2D*                h2_pT_vs_yCM_tr;
+    TH2D*                h2_pT_vs_yCM_tr_ETof;
 
     TH2D*                h2_dEdx_vs_qp_pp;
     TH2D*                h2_dEdx_vs_qp_pm;
