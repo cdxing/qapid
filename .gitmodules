@@ -1,0 +1,3 @@
+[submodule "StRoot/ConfigReader"]
+	path = StRoot/ConfigReader
+	url = git@github.com:cdxing/ConfigReader.git
