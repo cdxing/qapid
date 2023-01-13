@@ -1,3 +1,6 @@
 [submodule "StRoot/ConfigReader"]
 	path = StRoot/ConfigReader
 	url = git@github.com:cdxing/ConfigReader.git
+[submodule "StRoot/ConstManager"]
+	path = StRoot/ConstManager
+	url = git@github.com:cdxing/ConstManager.git
