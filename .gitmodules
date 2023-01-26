@@ -7,3 +7,6 @@
 [submodule "StRoot/CutManager"]
 	path = StRoot/CutManager
 	url = git@github.com:cdxing/CutManager.git
+[submodule "StRoot/HistManager"]
+	path = StRoot/HistManager
+	url = git@github.com:cdxing/HistManager.git
