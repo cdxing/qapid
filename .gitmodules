@@ -4,3 +4,6 @@
 [submodule "StRoot/ConstManager"]
 	path = StRoot/ConstManager
 	url = git@github.com:cdxing/ConstManager.git
+[submodule "StRoot/CutManager"]
+	path = StRoot/CutManager
+	url = git@github.com:cdxing/CutManager.git
